@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">NoteBook</string>
+    <string name="description">Description</string>
+    <string name="title">Title</string>
+    <string name="number_1">1</string>
+    <string name="priority">Priority:</string>
+    <string name="save">Save</string>
+    <string name="delete_all_notes">Delete all notes</string>
+</resources>
