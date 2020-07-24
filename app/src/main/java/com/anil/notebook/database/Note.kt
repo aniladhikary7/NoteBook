@@ -12,4 +12,27 @@ data class Note(
     val priority: Int? = null){
     constructor(title:String?, description: String?, priority: Int?)
             : this(null, title, description, priority)
+
+    override fun equals(other: Any?): Boolean {
+
+        if (javaClass != other?.javaClass){
+            return false
+        }
+
+        other as Note
+
+        if (id != other.id){
+            return false
+        }
+        if (title != other.title){
+            return false
+        }
+        if (description != other.description){
+            return false
+        }
+        if (priority != other.priority){
+            return false
+        }
+        return true
+    }
 }

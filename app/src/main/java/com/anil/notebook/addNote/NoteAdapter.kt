@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.anil.notebook.R
 import com.anil.notebook.database.Note
@@ -31,6 +32,23 @@ class NoteAdapter(val adapterOnClick: (Note) -> Unit)
         }
     }
 
+    class NoteItemDiffCallBack(
+        var oldNoteList: List<Note>,
+        var newNoteList: List<Note>): DiffUtil.Callback(){
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return (oldNoteList[oldItemPosition].id == newNoteList[newItemPosition].id)
+        }
+
+        override fun getOldListSize(): Int = oldNoteList.size
+
+        override fun getNewListSize(): Int = newNoteList.size
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldNoteList[oldItemPosition] == newNoteList[newItemPosition]
+        }
+
+    }
+
     private var notes: List<Note> = ArrayList<Note>()
 
 
@@ -54,9 +72,16 @@ class NoteAdapter(val adapterOnClick: (Note) -> Unit)
         }
     }
 
-    fun submitNotes(notes: List<Note>){
-        this.notes = notes
-        notifyDataSetChanged()
+    fun submitNotes(notesList: List<Note>){
+        val oldNoteList = notes
+        val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
+            NoteItemDiffCallBack(
+                oldNoteList,
+                notesList
+            )
+        )
+        notes = notesList
+        diffResult.dispatchUpdatesTo(this)
     }
 
     fun getNoteAt(position: Int): Note{
