@@ -23,7 +23,7 @@ import com.anil.notebook.viewModel.NoteViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-class MainActivity : AppCompatActivity(), View.OnClickListener, NoteAdapter.OnItemClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: NoteAdapter
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, NoteAdapter.OnIt
         recyclerView = findViewById(R.id.recycler_view)
         buttonAddNote = findViewById(R.id.button_add_note)
         buttonAddNote.setOnClickListener(this)
-        adapter = NoteAdapter(this)
+        adapter = NoteAdapter{item -> doClick(item)}
     }
 
     private fun initialise() {
@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, NoteAdapter.OnIt
         }
     }
 
-    override fun onItemClick(note: Note) {
+    private fun doClick(note: Note) {
         val intent = Intent(this, AddEditNoteActivity::class.java).apply {
             putExtra(AddEditNoteActivity.EXTRA_ID, note.id)
             putExtra(AddEditNoteActivity.EXTRA_TITLE, note.title)
